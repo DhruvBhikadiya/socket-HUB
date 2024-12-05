@@ -173,7 +173,7 @@ io.on('connection', (socket) => {
         try {
             const binarySubscriptionObj = binaryToString(binarySubscription);
             let parseSubscription = JSON.parse(binarySubscriptionObj);
-            console.log(parseSubscription,'-- parseSubscription --);
+            console.log(parseSubscription,'-- parseSubscription --');
             let keys = JSON.stringify(parseSubscription.keys);
             const userId = binaryToString(binaryId);
             const partnerId = binaryToString(partnerKey);
