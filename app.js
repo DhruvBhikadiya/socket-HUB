@@ -19,6 +19,10 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors());
 
+app.get('/api', async (req,res) => {
+    res.send('HUB is working');
+})
+
 function binaryToString(binaryStr) {
     return binaryStr.split(' ').map(bin => {
         const asciiValue = parseInt(bin, 2);
