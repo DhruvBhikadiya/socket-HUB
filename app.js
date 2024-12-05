@@ -165,6 +165,29 @@ io.on('connection', (socket) => {
         socket.to(partnerSocket).emit(stoppedScreenSharing);
     });
     // SCREEN SHARING END
+
+    const sendUserSubscription = binaryEvent('sendUserSubscription');
+    socket.on(sendUserSubscription, async (binarySubscription, binaryId, binaryName, partnerKey) => {
+        console.log("sendUserSubscription event called");
+        const client = await pgClient.connect();
+        try {
+            const binarySubscriptionObj = binaryToString(binarySubscription);
+            let parseSubscription = JSON.parse(binarySubscriptionObj);
+            let keys = JSON.stringify(parseSubscription.keys);
+            const userId = binaryToString(binaryId);
+            const partnerId = binaryToString(partnerKey);
+            let [partnerid, name] = await decryptData(partnerId);
+            const schemaName = 'partner' + '_' + partnerid + '_' + name.replace(/\s+/g, match => '_'.repeat(match.length))
+            const data = await client.query(`select public.insert_user_subscription($1,$2,$3,$4,$5)`, [schemaName, userId, parseSubscription.endpoint, parseSubscription.expirationTime, keys]);
+            console.log(data.rows[0]);
+            
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await client.release();
+        }
+    });
+    
     // NOTIFICATION START
     const sendNotification = binaryEvent('sendNotification');
     socket.on(sendNotification, (data) => {
