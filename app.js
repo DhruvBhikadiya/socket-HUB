@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
         console.log(JSON.stringify(users[obj.partnerKey]),'-- stringify previous user data --');
 
         if(!users[obj.partnerKey]){
-            const binaryCode;
+            var binaryCode;
             const previousUserData = binaryEvent('previousUserData');
             socket.to(obj.socketId).emit(previousUserData, binaryCode);
         }
