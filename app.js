@@ -8,6 +8,14 @@ require('dotenv').config();
 const app = express();
 const server = createServer(app);
 
+const pgClient = {
+    host: "45.92.9.232",
+    port: 5432,
+    user: "casi-demo",
+    password: "wkN2gJu",
+    database: "CRM"
+}
+
 const io = new Server(server, {
     maxHttpBufferSize: 1e8,
     cors: {
