@@ -96,6 +96,12 @@ io.on('connection', (socket) => {
         console.log('partnerJoined', obj.socketId);
 
         partners[obj.partnerKey] = obj.socketId;
+
+        const jsonString = JSON.stringify(users[obj.partnerKey]);
+        const binaryCode = stringToBinary(jsonString);
+        const binaryCode = stringToBinary(jsonString);
+        const previousUserData = binaryEvent('previousUserData');
+        socket.to(obj.socketId).emit(previousUserData, binaryCode);
     });
 
     // SCREEN-SHOT EVENT CALLED FROM PARTNER
