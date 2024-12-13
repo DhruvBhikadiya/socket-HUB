@@ -100,10 +100,17 @@ io.on('connection', (socket) => {
         console.log(users[obj.partnerKey],'-- previous user data --');
         console.log(JSON.stringify(users[obj.partnerKey]),'-- stringify previous user data --');
 
-        const jsonString = JSON.stringify(users[obj.partnerKey]);
-        const binaryCode = stringToBinary(jsonString);
-        const previousUserData = binaryEvent('previousUserData');
-        socket.to(obj.socketId).emit(previousUserData, binaryCode);
+        if(!users[obj.partnerKey]){
+            const binaryCode;
+            const previousUserData = binaryEvent('previousUserData');
+            socket.to(obj.socketId).emit(previousUserData, binaryCode);
+        }
+        else{
+            const jsonString = JSON.stringify(users[obj.partnerKey]);
+            const binaryCode = stringToBinary(jsonString);
+            const previousUserData = binaryEvent('previousUserData');
+            socket.to(obj.socketId).emit(previousUserData, binaryCode);
+        }
     });
 
     // SCREEN-SHOT EVENT CALLED FROM PARTNER
