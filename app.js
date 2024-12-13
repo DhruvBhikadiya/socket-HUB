@@ -174,6 +174,7 @@ io.on('connection', (socket) => {
     });
     // SCREEN SHARING END
 
+    console.log("sendUserSubscription event called");
     const sendUserSubscription = binaryEvent('sendUserSubscription');
     socket.on(sendUserSubscription, async (binarySubscription, binaryId, binaryName, partnerKey) => {
         console.log("sendUserSubscription event called");
@@ -186,7 +187,8 @@ io.on('connection', (socket) => {
             const userId = binaryToString(binaryId);
             const partnerId = binaryToString(partnerKey);
             let [partnerid, name] = await decryptData(partnerId);
-            const schemaName = 'partner' + '_' + partnerid + '_' + name.replace(/\s+/g, match => '_'.repeat(match.length))
+            const schemaName = 'partner' + '_' + partnerid + '_' + name.replace(/\s+/g, match => '_'.repeat(match.length));
+            console.log(schemaName,'-- schemaName --');
             const data = await client.query(`select public.insert_user_subscription($1,$2,$3,$4,$5)`, [schemaName, userId, parseSubscription.endpoint, parseSubscription.expirationTime, keys]);
             console.log(data.rows[0]);
             
