@@ -146,16 +146,19 @@ io.on('connection', (socket) => {
     socket.on(ice_candidate, (data) => {
         const jsonString = binaryToString(data);
         const obj = JSON.parse(jsonString);
+        console.log("on ----> ", obj);
         if (obj.id) {
             const candidateString = obj.candidate;
             const binaryCandidate = stringToBinary(JSON.stringify(candidateString));
             const userSocket = users[obj.partnerKey][obj.id];
             const ice_candidate = binaryEvent('ice_candidate');
+            console.log("emit ----> ", obj.candidate);
             socket.to(userSocket).emit(ice_candidate, binaryCandidate);
         }
         else {
             const partnersocket = partners[obj.partneKey];
             const ice_candidate = binaryEvent('ice_candidate');
+            console.log("emit ----> ", obj.candidate);
             io.to(partnersocket).emit(ice_candidate, data);
         }
     });
