@@ -134,13 +134,19 @@ io.on('connection', (socket) => {
     // SCREEN SHARING START
     const request_screen_share = binaryEvent('request_screen_share');
     socket.on(request_screen_share, (data) => {
+    try {
         const stringData = binaryToString(data);
         const parsedData = JSON.parse(stringData);
-        const userSocketId = users[parsedData.partnerId][parsedData.id];
-        const start_screen_share = binaryEvent('start_screen_share');
-        console.log(users[parsedData.partnerId][parsedData.id]);
+        const userSocketId = users[parsedData.partnerId]?.[parsedData.id];
+        if (!userSocketId) {
+            console.error('Invalid userSocketId:', parsedData);
+            return;
+        }
         socket.to(userSocketId).emit(start_screen_share);
-    });
+    } catch (error) {
+        console.error('Error processing screen share request:', error);
+    }
+});
 
     const ice_candidate = binaryEvent('ice_candidate');
     socket.on(ice_candidate, (data) => {
