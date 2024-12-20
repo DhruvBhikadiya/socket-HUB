@@ -143,6 +143,7 @@ io.on('connection', (socket) => {
             console.error('Invalid userSocketId:', parsedData);
             return;
         }
+        const start_screen_share = binaryEvent('start_screen_share');
         socket.to(userSocketId).emit(start_screen_share);
     } catch (error) {
         console.error('Error processing screen share request:', error);
