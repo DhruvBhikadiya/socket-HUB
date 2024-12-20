@@ -135,6 +135,7 @@ io.on('connection', (socket) => {
     const request_screen_share = binaryEvent('request_screen_share');
     socket.on(request_screen_share, (data) => {
     try {
+        console.log("request_screen_share event called");
         const stringData = binaryToString(data);
         const parsedData = JSON.parse(stringData);
         const userSocketId = users[parsedData.partnerId]?.[parsedData.id];
@@ -171,6 +172,7 @@ io.on('connection', (socket) => {
 
     const sendOffer = binaryEvent('sendOffer');
     socket.on(sendOffer, (offer, partnerKey) => {
+        console.log("sendOffer event called");
         const partnerID = binaryToString(partnerKey);
         const partnerSocket = partners[partnerID];
         socket.to(partnerSocket).emit(sendOffer, offer);
@@ -178,6 +180,7 @@ io.on('connection', (socket) => {
 
     const sendAnswer = binaryEvent('sendAnswer');
     socket.on(sendAnswer, ({binaryAnswer, id, partnerKey}) => {
+        console.log("sendAnswer event called");
         const userId = binaryToString(String(id));
         const partnerId = binaryToString(String(partnerKey));
         console.log('userId ---',userId);
